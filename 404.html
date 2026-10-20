@@ -302,7 +302,7 @@
 
   texteSetzen();
   if (!/^[0-9A-Za-z-]{10,60}$/.test(code)) { zeige('v-ungueltig'); return; }
-  fetch(ENDPOINT + '?aktion=formular&c=' + encodeURIComponent(code))
+  fetch(ENDPOINT + '?aktion=formular&code=' + encodeURIComponent(code))
     .then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res || !res.ok) throw new Error('ungültig');
