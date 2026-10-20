@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light">
+<title>Suspension setup</title>
+<style>
+  :root{--ink:#16181d;--muted:#5f6672;--line:#dde1e6;--soft:#f4f5f7;--field:#cfd4db;--ok:#1f7a4d;--bad:#a1262b;--bad-bg:#fbeceb;--note:#f6f1e4;--note-ink:#6b5113}
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--soft);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+  .wrap{max-width:780px;margin:0 auto;padding:16px 16px 48px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 20px}
+  .brand{min-width:0}
+  .brand small{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brand strong{display:block;font-size:20px;line-height:1.25;overflow-wrap:anywhere}
+  .lang{display:flex;gap:2px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px;flex:none}
+  .lang button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--muted);padding:6px 9px;border-radius:7px;cursor:pointer}
+  .lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:clamp(18px,4vw,36px)}
+  h1{font-size:clamp(24px,4vw,30px);line-height:1.2;margin:0 0 8px}
+  h2{font-size:20px;line-height:1.3;margin:0 0 6px}
+  .intro{color:var(--muted);margin:0 0 16px}
+  .fuer{display:inline-block;background:var(--soft);border-radius:8px;padding:6px 10px;font-size:14px;margin:0 0 4px}
+  .note{background:var(--note);color:var(--note-ink);border-radius:12px;padding:12px 14px;font-size:14px;margin:16px 0 0}
+  .step{padding:28px 0;border-top:1px solid var(--line)}
+  .step:first-of-type{border-top:0}
+  .label{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+  .wide{grid-column:1/-1}
+  .field label,legend{display:block;font-weight:600;font-size:15px;margin:0 0 6px;padding:0}
+  .opt-text{font-weight:400;color:var(--muted)}
+  input[type=text],input[type=number],textarea{display:block;width:100%;background:#fff;border:1px solid var(--field);border-radius:9px;padding:12px 14px;font:inherit;font-size:16px;color:var(--ink)}
+  textarea{min-height:96px;resize:vertical}
+  input:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(22,24,29,.1)}
+  ::placeholder{color:#9aa1ab}
+  .hint{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:6px}
+  fieldset{border:0;margin:24px 0 0;padding:0;min-width:0}
+  legend{margin-bottom:10px}
+  .options{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+  .option{position:relative;display:block;cursor:pointer;margin:0}
+  .option input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+  .option span{display:block;height:100%;padding:14px;border:1px solid #d5d9df;border-radius:12px;background:#fff;transition:border-color .15s,background-color .15s}
+  .option strong{display:block;font-size:16px;font-weight:600;margin-bottom:4px}
+  .option small{display:block;color:var(--muted);font-size:13px;line-height:1.45}
+  .option:hover span{border-color:#9aa1ab}
+  .option input:checked+span{border-color:var(--ink);background:var(--soft);box-shadow:inset 0 0 0 1px var(--ink)}
+  .option input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pills .option span{padding:10px 18px;border-radius:999px;font-weight:600;font-size:15px}
+  .submit{display:block;width:100%;margin:26px 0 0;padding:16px 20px;border:0;border-radius:11px;background:var(--ink);color:#fff;font:inherit;font-size:17px;font-weight:600;cursor:pointer}
+  .submit:disabled{opacity:.7;cursor:wait}
+  .privacy{color:var(--muted);font-size:13px;line-height:1.5;margin:14px 0 0;text-align:center}
+  .error{background:var(--bad-bg);color:var(--bad);border-radius:12px;padding:14px 16px;margin-top:20px}
+  .center{text-align:center;padding:24px 0}
+  .check{width:52px;height:52px;border-radius:50%;background:#e6f3ec;color:var(--ok);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:28px;font-weight:700}
+  [hidden]{display:none !important}
+  @media (max-width:640px){.grid{grid-template-columns:1fr}.options{grid-template-columns:1fr}.brand strong{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><small data-t="kopf_label"></small><strong id="haendler"></strong></div>
+    <div class="lang" role="group" id="lang"></div>
+  </header>
+
+  <main class="card">
+    <section id="v-laden" class="center"><p data-t="laden"></p></section>
+
+    <section id="v-ungueltig" class="center" hidden>
+      <h1 data-t="ungueltig_titel"></h1>
+      <p class="intro" data-t="ungueltig_text"></p>
+    </section>
+
+    <section id="v-danke" class="center" hidden tabindex="-1">
+      <div class="check" aria-hidden="true">✓</div>
+      <span class="label" data-t="angaben_erhalten"></span>
+      <h1 data-t="danke"></h1>
+      <p class="intro" id="danke-text"></p>
+    </section>
+
+    <form id="f" hidden novalidate>
+      <div>
+        <h1 data-t="titel"></h1>
+        <p class="intro" data-t="intro"></p>
+        <p class="fuer" id="fuer" hidden></p>
+        <p class="note" id="schon" data-t="schon_ausgefuellt" hidden></p>
+      </div>
+
+      <div class="step">
+        <span class="label" data-t="schritt_name"></span>
+        <h2 data-t="name_frage"></h2>
+        <div class="grid">
+          <div class="field wide">
+            <label for="f-name" data-t="name"></label>
+            <input id="f-name" type="text" data-key="name" autocomplete="name" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="label" data-t="schritt_fahrer"></span>
+        <h2 data-t="fahrer_frage"></h2>
+        <p class="intro" data-t="fahrer_intro"></p>
+        <div class="grid">
+          <div class="field">
+            <label for="f-kg" data-t="gewicht"></label>
+            <input id="f-kg" type="number" inputmode="decimal" data-key="gewicht" min="30" max="200" step="0.5" data-tp="bsp_gewicht" required>
+            <small class="hint" data-t="gewicht_hinweis"></small>
+          </div>
+        </div>
+        <fieldset><legend data-t="einsatzbereich"></legend><div class="options" id="o-einsatz"></div></fieldset>
+        <fieldset><legend data-t="fahrstil"></legend><div class="options" id="o-stil"></div></fieldset>
+        <fieldset><legend data-t="fahrkoennen"></legend><div class="options" id="o-koennen"></div></fieldset>
+      </div>
+
+      <div class="step">
+        <span class="label" data-t="schritt_bike"></span>
+        <h2 data-t="bike_frage"></h2>
+        <div class="grid">
+          <div class="field"><label for="f-marke" data-t="marke"></label><input id="f-marke" type="text" data-key="marke" data-tp="bsp_marke" required></div>
+          <div class="field"><label for="f-modell" data-t="modell"></label><input id="f-modell" type="text" data-key="modell" data-tp="bsp_modell" required></div>
+          <div class="field"><label for="f-jahr" data-t="jahrgang"></label><input id="f-jahr" type="number" inputmode="numeric" data-key="jahr" min="1990" max="2035" data-tp="bsp_jahrgang" required></div>
+          <div class="field"><label for="f-groesse" data-t="rahmengroesse"></label><input id="f-groesse" type="text" data-key="rahmengroesse" data-tp="bsp_rahmengroesse"></div>
+          <div class="field wide">
+            <label for="f-fw" data-t="federweg_einstellung"></label>
+            <input id="f-fw" type="text" data-key="federweg_einstellung" data-tp="bsp_federweg_einstellung">
+            <small class="hint" data-t="federweg_hinweis"></small>
+          </div>
+        </div>
+        <fieldset><legend data-t="laufradgroesse"></legend><div class="pills" id="o-rad"></div></fieldset>
+        <fieldset><legend data-t="e_bike"></legend><div class="pills" id="o-ebike"></div></fieldset>
+      </div>
+
+      <div class="step">
+        <span class="label" data-t="schritt_fahrwerk"></span>
+        <h2 data-t="fahrwerk_titel"></h2>
+        <p class="intro" data-t="fahrwerk_intro"></p>
+        <div class="grid">
+          <div class="field"><label for="f-gabel" data-t="gabel"></label><input id="f-gabel" type="text" data-key="gabel" data-tp="bsp_gabel"></div>
+          <div class="field"><label for="f-gabel-sn" data-t="gabel_sn"></label><input id="f-gabel-sn" type="text" data-key="gabel_seriennummer" autocapitalize="characters"></div>
+          <div class="field"><label for="f-daempfer" data-t="daempfer"></label><input id="f-daempfer" type="text" data-key="daempfer" data-tp="bsp_daempfer"></div>
+          <div class="field"><label for="f-daempfer-sn" data-t="daempfer_sn"></label><input id="f-daempfer-sn" type="text" data-key="daempfer_seriennummer" autocapitalize="characters"></div>
+          <div class="field wide">
+            <label for="f-setup"><span data-t="setup"></span> <span class="opt-text" data-t="optional"></span></label>
+            <textarea id="f-setup" data-key="setup" rows="3" data-tp="bsp_setup"></textarea>
+            <small class="hint" data-t="setup_hinweis"></small>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="label" data-t="schritt_ziel"></span>
+        <h2 id="wunsch-h" data-t="ziel_frage"></h2>
+        <div class="field">
+          <textarea id="f-wunsch" aria-labelledby="wunsch-h" data-key="wunsch" rows="5" data-tp="bsp_ziel" required></textarea>
+          <small class="hint" data-t="ziel_hinweis"></small>
+        </div>
+        <div class="error" id="fehler" role="alert" hidden></div>
+        <button type="submit" class="submit" data-t="senden"></button>
+        <p class="privacy" id="privacy"></p>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyTlfDWQTVy2V0IcEYIWICIY6Amm98jbDoF8kw2bTvWgQCF2_ppUA9Q6vHyP9azR6GzDg/exec';
+  var TEXTE = {"de": {"angaben_erhalten": "Angaben erhalten", "danke": "Danke, wir haben alles!", "fehler": "Das hat nicht geklappt.", "name": "Vor- und Nachname", "schritt_fahrer": "02 · Du als Fahrer", "fahrer_frage": "Wie fährst du?", "fahrer_intro": "Der Tune hängt nicht nur vom Gewicht ab. Wähle jeweils, was am besten zu dir passt.", "gewicht": "Fahrergewicht fahrfertig (kg)", "bsp_gewicht": "z. B. 85", "gewicht_hinweis": "Mit Kleidung, Helm, Protektoren, Rucksack und Trinkflasche – so, wie du auf dem Bike sitzt.", "einsatzbereich": "Einsatzbereich", "einsatz_dh_race": "Du fährst Downhill-Rennen, mit dem DH-Bike oder einem langhubigen Enduro. Es zählt nur, unter Rennbedingungen so schnell wie möglich runterzukommen.", "einsatz_dh_bikepark": "Bikepark mit DH- oder Enduro-Bike: Sprünge, Bremswellen und eine gute Zeit im Park.", "einsatz_enduro_race": "Du fährst Enduro-Rennen. Bergab willst du die schnellste Zeit, hoch kommst du aus eigener Kraft. Das Fahrwerk braucht mehr Support.", "einsatz_all_mountain": "Hoch, runter, über Stock und Stein: ruppige Trails, flowige Abfahrten, technische Anstiege und lange Touren. Viele nennen es Enduro, einfach ohne Rennen.", "einsatz_xc_trail": "Du sammelst gerne Kilometer, meidest aber die ruppigsten Abfahrten. Das Fahrwerk soll Wurzeln und Trail-Geratter schlucken und trotzdem effizient treten.", "einsatz_xc_race": "Effizienz ist alles. Das Fahrwerk soll nur arbeiten, wenn es nötig ist, jeder Tritt soll ankommen.", "fahrstil": "Fahrstil", "stil_sehr_aggressiv": "Sehr aggressiv", "stil_sehr_aggressiv_text": "Du attackierst die Strecke, fährst durch alles durch und nimmst immer die schnellste Linie, egal wie ruppig.", "stil_aggressiv": "Aggressiv", "stil_aggressiv_text": "Du willst so schnell wie möglich sein und nutzt das Bike dafür, gehst aber nicht jedes Risiko ein.", "stil_fluessig": "Flüssig", "stil_fluessig_text": "Du fährst überlegt, nimmst die smarte statt der direkten Linie und nutzt das Gelände, um flüssig zu fahren.", "stil_kontrolliert": "Kontrolliert", "stil_kontrolliert_text": "Du fährst alles, was in deinem Können liegt, gehst aber nicht ans Limit. Ziel ist ein sauberer Run.", "stil_vorsichtig": "Vorsichtig", "stil_vorsichtig_text": "Du gehst Hindernisse mit Bedacht an, nimmst die einfache Linie und behältst das Bike immer unter Kontrolle.", "fahrkoennen": "Fahrkönnen", "koennen_experte": "Experte", "koennen_experte_text": "Du fährst alles, auch die schwierigsten schwarzen Strecken mit jedem Feature. An Rennen landest du national im vorderen Viertel.", "koennen_fortgeschritten": "Fortgeschritten", "koennen_fortgeschritten_text": "Du fährst schwarze Strecken, lässt aber einzelne Features aus. Auf roten Strecken fühlst du dich richtig wohl. An Rennen eher im Mittelfeld.", "koennen_einsteiger": "Einsteiger", "koennen_einsteiger_text": "Rote Strecken sind deine Grenze. Du bist neu im Sport oder arbeitest dich durch die Schwierigkeitsgrade. Rennen höchstens zum Spass.", "schritt_bike": "03 · Dein Bike", "bike_frage": "Auf welchem Bike fährst du?", "marke": "Marke", "bsp_marke": "z. B. Santa Cruz", "modell": "Modell", "bsp_modell": "z. B. Megatower", "jahrgang": "Jahrgang", "bsp_jahrgang": "z. B. 2024", "rahmengroesse": "Rahmengrösse", "bsp_rahmengroesse": "z. B. L oder S4", "federweg_einstellung": "Federweg-Einstellung am Rahmen", "bsp_federweg_einstellung": "z. B. Flip-Chip «high» oder 160 mm", "federweg_hinweis": "Nur falls dein Rahmen verstellbar ist.", "laufradgroesse": "Laufradgrösse", "e_bike": "E-Bike?", "schritt_fahrwerk": "04 · Dein Fahrwerk", "fahrwerk_titel": "Gabel und Dämpfer", "fahrwerk_intro": "Fülle mindestens das Federelement aus, das wir bearbeiten. Die Seriennummer steht auf einem Aufkleber am Federelement, bei Gabeln meist hinten am Casting, bei Dämpfern auf dem Dämpferkörper.", "gabel": "Gabel", "bsp_gabel": "z. B. FOX 38 Factory GRIP X2, 170 mm", "gabel_sn": "Seriennummer Gabel", "daempfer": "Dämpfer", "bsp_daempfer": "z. B. RockShox Super Deluxe Coil, 230×65", "daempfer_sn": "Seriennummer Dämpfer", "setup": "Dein aktuelles Setup", "optional": "(optional)", "bsp_setup": "z. B. Gabel 78 psi, 2 Tokens, LSC 8 Klicks offen · Dämpfer 450er Feder, Rebound 10 Klicks", "setup_hinweis": "Luftdruck oder Federhärte, Tokens und Klicks – falls du es weisst.", "schritt_ziel": "05 · Dein Ziel", "ziel_frage": "Was soll besser werden?", "bsp_ziel": "z. B. Die Gabel taucht beim Bremsen stark ein, hinten fehlt mir Grip auf Wurzeln, im Bikepark schlagen die Bremswellen durch …", "ziel_hinweis": "Je genauer du beschreibst, was dich heute stört, desto besser passt der Tune.", "senden": "Angaben senden", "wird_gesendet_html": "Wird gesendet …", "gabel_oder_daempfer_html": "Bitte gib mindestens die Gabel oder den Dämpfer an.", "allgemein_ja": "Ja", "allgemein_nein": "Nein", "kopf_label": "Fahrwerk-Formular", "titel": "Deine Angaben für das Tuning", "intro": "Damit dein Fahrwerk passend abgestimmt wird, brauchen wir ein paar Angaben zu dir, deinem Bike und deinem Fahrwerk. Das dauert etwa fünf Minuten.", "fuer": "Für", "schritt_name": "01 · Du", "name_frage": "Wie heisst du?", "schon_ausgefuellt": "Für dieses Tuning sind schon Angaben da. Sendest du nochmals, ersetzen sie die bisherigen.", "ungueltig_titel": "Dieser Link funktioniert nicht", "ungueltig_text": "Bitte frag dort, wo du dein Bike abgegeben hast, nach einem neuen Link.", "laden": "Wird geladen …", "danke_text": "{h} meldet sich, falls noch etwas fehlt.", "danke_text_ohne": "Wir melden uns, falls noch etwas fehlt.", "fehler_text": "Versuch es bitte nochmals oder melde dich bei {h}.", "fehler_text_ohne": "Versuch es bitte nochmals.", "datenschutz": "Verantwortlich für deine Angaben ist {h}{a}. Sie werden nur für die Arbeit an deinem Fahrwerk verwendet und dafür an einen spezialisierten Fahrwerkspartner weitergegeben.", "datenschutz_ohne": "Deine Angaben werden nur für die Arbeit an deinem Fahrwerk verwendet.", "sprache": "Sprache"}, "fr": {"angaben_erhalten": "Informations reçues", "danke": "Merci, nous avons tout reçu !", "fehler": "Cela n'a pas fonctionné.", "name": "Prénom et nom", "schritt_fahrer": "02 · Vous en tant que pilote", "fahrer_frage": "Comment roulez-vous ?", "fahrer_intro": "Le réglage ne dépend pas seulement du poids. Choisissez à chaque fois ce qui vous correspond le mieux.", "gewicht": "Poids du pilote équipé (kg)", "bsp_gewicht": "p. ex. 85", "gewicht_hinweis": "Avec vêtements, casque, protections, sac à dos et bidon – tel que vous êtes sur le vélo.", "einsatzbereich": "Discipline", "einsatz_dh_race": "Vous faites des courses de descente, en DH ou avec un enduro à grand débattement. Seule compte la vitesse maximale en conditions de course.", "einsatz_dh_bikepark": "Bikepark en DH ou en enduro : sauts, bosses de freinage et du plaisir au park.", "einsatz_enduro_race": "Vous faites des courses d'enduro. En descente, vous visez le meilleur temps ; en montée, vous pédalez par vos propres moyens. Les suspensions ont besoin de plus de soutien.", "einsatz_all_mountain": "Montées, descentes, à travers tout : sentiers cassants, descentes fluides, montées techniques et longues sorties. Beaucoup appellent ça de l'enduro, simplement sans course.", "einsatz_xc_trail": "Vous aimez avaler les kilomètres, mais évitez les descentes les plus cassantes. Les suspensions doivent absorber racines et vibrations tout en restant efficaces au pédalage.", "einsatz_xc_race": "L'efficacité avant tout. Les suspensions ne doivent travailler que lorsque c'est nécessaire, chaque coup de pédale doit compter.", "fahrstil": "Style de pilotage", "stil_sehr_aggressiv": "Très agressif", "stil_sehr_aggressiv_text": "Vous attaquez la piste, passez à travers tout et prenez toujours la ligne la plus rapide, aussi cassante soit-elle.", "stil_aggressiv": "Agressif", "stil_aggressiv_text": "Vous voulez être le plus rapide possible et exploitez le vélo pour y parvenir, sans pour autant prendre tous les risques.", "stil_fluessig": "Fluide", "stil_fluessig_text": "Vous roulez de manière réfléchie, choisissez la ligne intelligente plutôt que la plus directe et utilisez le terrain pour garder de la fluidité.", "stil_kontrolliert": "Contrôlé", "stil_kontrolliert_text": "Vous roulez tout ce qui est à votre portée, sans aller à la limite. L'objectif est un run propre.", "stil_vorsichtig": "Prudent", "stil_vorsichtig_text": "Vous abordez les obstacles avec prudence, prenez la ligne facile et gardez toujours le contrôle du vélo.", "fahrkoennen": "Niveau de pilotage", "koennen_experte": "Expert", "koennen_experte_text": "Vous roulez tout, même les pistes noires les plus difficiles avec tous les obstacles. En course, vous terminez dans le premier quart au niveau national.", "koennen_fortgeschritten": "Confirmé", "koennen_fortgeschritten_text": "Vous roulez les pistes noires, mais évitez certains obstacles. Sur les pistes rouges, vous êtes vraiment à l'aise. En course, plutôt en milieu de classement.", "koennen_einsteiger": "Débutant", "koennen_einsteiger_text": "Les pistes rouges sont votre limite. Vous débutez dans ce sport ou progressez d'un niveau de difficulté à l'autre. Les courses, tout au plus pour le plaisir.", "schritt_bike": "03 · Votre vélo", "bike_frage": "Sur quel vélo roulez-vous ?", "marke": "Marque", "bsp_marke": "p. ex. Santa Cruz", "modell": "Modèle", "bsp_modell": "p. ex. Megatower", "jahrgang": "Année-modèle", "bsp_jahrgang": "p. ex. 2024", "rahmengroesse": "Taille du cadre", "bsp_rahmengroesse": "p. ex. L ou S4", "federweg_einstellung": "Réglage du débattement sur le cadre", "bsp_federweg_einstellung": "p. ex. flip-chip « high » ou 160 mm", "federweg_hinweis": "Uniquement si votre cadre est réglable.", "laufradgroesse": "Taille des roues", "e_bike": "VTT électrique ?", "schritt_fahrwerk": "04 · Vos suspensions", "fahrwerk_titel": "Fourche et amortisseur", "fahrwerk_intro": "Remplissez au moins l'élément de suspension sur lequel nous intervenons. Le numéro de série figure sur un autocollant : sur les fourches, généralement à l'arrière des fourreaux, sur les amortisseurs, sur le corps de l'amortisseur.", "gabel": "Fourche", "bsp_gabel": "p. ex. FOX 38 Factory GRIP X2, 170 mm", "gabel_sn": "Numéro de série de la fourche", "daempfer": "Amortisseur", "bsp_daempfer": "p. ex. RockShox Super Deluxe Coil, 230×65", "daempfer_sn": "Numéro de série de l'amortisseur", "setup": "Vos réglages actuels", "optional": "(facultatif)", "bsp_setup": "p. ex. fourche 78 psi, 2 tokens, LSC 8 clics ouverts · amortisseur ressort 450, rebond 10 clics", "setup_hinweis": "Pression d'air ou dureté du ressort, tokens et clics – si vous les connaissez.", "schritt_ziel": "05 · Votre objectif", "ziel_frage": "Qu'est-ce qui doit s'améliorer ?", "bsp_ziel": "p. ex. La fourche plonge fortement au freinage, je manque de grip à l'arrière sur les racines, les bosses de freinage se ressentent au bikepark …", "ziel_hinweis": "Plus vous décrivez précisément ce qui vous gêne aujourd'hui, plus le réglage sera adapté.", "senden": "Envoyer les informations", "wird_gesendet_html": "Envoi en cours …", "gabel_oder_daempfer_html": "Veuillez indiquer au moins la fourche ou l'amortisseur.", "allgemein_ja": "Oui", "allgemein_nein": "Non", "kopf_label": "Formulaire suspensions", "titel": "Vos informations pour le tuning", "intro": "Pour que vos suspensions soient réglées sur mesure, nous avons besoin de quelques informations sur vous, votre vélo et vos suspensions. Cela prend environ cinq minutes.", "fuer": "Pour", "schritt_name": "01 · Vous", "name_frage": "Comment vous appelez-vous ?", "schon_ausgefuellt": "Des informations ont déjà été transmises pour ce tuning. Si vous les envoyez à nouveau, elles remplaceront les précédentes.", "ungueltig_titel": "Ce lien ne fonctionne pas", "ungueltig_text": "Veuillez demander un nouveau lien là où vous avez déposé votre vélo.", "laden": "Chargement …", "danke_text": "{h} vous contactera s'il manque quelque chose.", "danke_text_ohne": "Nous vous contacterons s'il manque quelque chose.", "fehler_text": "Veuillez réessayer ou contacter {h}.", "fehler_text_ohne": "Veuillez réessayer.", "datenschutz": "Le responsable du traitement de vos informations est {h}{a}. Elles sont utilisées uniquement pour le travail sur vos suspensions et transmises à cet effet à un partenaire spécialisé en suspensions.", "datenschutz_ohne": "Vos informations sont utilisées uniquement pour le travail sur vos suspensions.", "sprache": "Langue"}, "it": {"angaben_erhalten": "Dati ricevuti", "danke": "Grazie, abbiamo tutto!", "fehler": "Qualcosa non ha funzionato.", "name": "Nome e cognome", "schritt_fahrer": "02 · Tu come rider", "fahrer_frage": "Come guidi?", "fahrer_intro": "Il tune non dipende solo dal peso. Scegli ogni volta l’opzione che ti descrive meglio.", "gewicht": "Peso del rider equipaggiato (kg)", "bsp_gewicht": "p. es. 85", "gewicht_hinweis": "Con abbigliamento, casco, protezioni, zaino e borraccia – così come sei in sella.", "einsatzbereich": "Disciplina", "einsatz_dh_race": "Fai gare di downhill, con una bici DH o un’enduro a lunga escursione. Conta solo scendere il più veloce possibile in condizioni di gara.", "einsatz_dh_bikepark": "Bikepark con bici DH o enduro: salti, buche da frenata e divertimento nel park.", "einsatz_enduro_race": "Fai gare di enduro. In discesa vuoi il tempo migliore, in salita pedali con le tue forze. Le sospensioni hanno bisogno di più sostegno.", "einsatz_all_mountain": "Su, giù, tra sassi e radici: trail scassati, discese flow, salite tecniche e lunghi giri. Molti lo chiamano enduro, solo senza gare.", "einsatz_xc_trail": "Ti piace macinare chilometri, ma eviti le discese più scassate. Le sospensioni devono assorbire radici e vibrazioni e restare comunque efficienti in pedalata.", "einsatz_xc_race": "L’efficienza è tutto. Le sospensioni devono lavorare solo quando serve, ogni pedalata deve arrivare a terra.", "fahrstil": "Stile di guida", "stil_sehr_aggressiv": "Molto aggressivo", "stil_sehr_aggressiv_text": "Attacchi il tracciato, passi sopra a tutto e prendi sempre la linea più veloce, per quanto scassata sia.", "stil_aggressiv": "Aggressivo", "stil_aggressiv_text": "Vuoi essere il più veloce possibile e sfrutti la bici per riuscirci, ma non corri ogni rischio.", "stil_fluessig": "Fluido", "stil_fluessig_text": "Guidi in modo ragionato, scegli la linea intelligente invece di quella diretta e sfrutti il terreno per restare fluido.", "stil_kontrolliert": "Controllato", "stil_kontrolliert_text": "Affronti tutto ciò che rientra nelle tue capacità, ma senza andare al limite. L’obiettivo è una run pulita.", "stil_vorsichtig": "Prudente", "stil_vorsichtig_text": "Affronti gli ostacoli con cautela, scegli la linea facile e tieni sempre la bici sotto controllo.", "fahrkoennen": "Livello di guida", "koennen_experte": "Esperto", "koennen_experte_text": "Guidi tutto, anche le piste nere più difficili con ogni feature. In gara arrivi nel primo quarto a livello nazionale.", "koennen_fortgeschritten": "Avanzato", "koennen_fortgeschritten_text": "Guidi le piste nere, ma salti alcune feature. Sulle piste rosse ti senti davvero a tuo agio. In gara piuttosto a metà classifica.", "koennen_einsteiger": "Principiante", "koennen_einsteiger_text": "Le piste rosse sono il tuo limite. Sei nuovo in questo sport o stai salendo di livello. Le gare al massimo per divertimento.", "schritt_bike": "03 · La tua bici", "bike_frage": "Con quale bici giri?", "marke": "Marca", "bsp_marke": "p. es. Santa Cruz", "modell": "Modello", "bsp_modell": "p. es. Megatower", "jahrgang": "Anno modello", "bsp_jahrgang": "p. es. 2024", "rahmengroesse": "Taglia del telaio", "bsp_rahmengroesse": "p. es. L o S4", "federweg_einstellung": "Regolazione dell’escursione sul telaio", "bsp_federweg_einstellung": "p. es. flip chip «high» o 160 mm", "federweg_hinweis": "Solo se il tuo telaio è regolabile.", "laufradgroesse": "Misura delle ruote", "e_bike": "E-bike?", "schritt_fahrwerk": "04 · Le tue sospensioni", "fahrwerk_titel": "Forcella e ammortizzatore", "fahrwerk_intro": "Compila almeno l’elemento sospensione su cui lavoriamo. Il numero di serie si trova su un adesivo: sulle forcelle di solito dietro i foderi, sugli ammortizzatori sul corpo dell’ammortizzatore.", "gabel": "Forcella", "bsp_gabel": "p. es. FOX 38 Factory GRIP X2, 170 mm", "gabel_sn": "Numero di serie forcella", "daempfer": "Ammortizzatore", "bsp_daempfer": "p. es. RockShox Super Deluxe Coil, 230×65", "daempfer_sn": "Numero di serie ammortizzatore", "setup": "Il tuo setup attuale", "optional": "(facoltativo)", "bsp_setup": "p. es. forcella 78 psi, 2 token, LSC 8 clic aperto · ammortizzatore molla 450, rebound 10 clic", "setup_hinweis": "Pressione dell’aria o durezza della molla, token e clic – se li conosci.", "schritt_ziel": "05 · Il tuo obiettivo", "ziel_frage": "Che cosa deve migliorare?", "bsp_ziel": "p. es. La forcella affonda molto in frenata, dietro mi manca grip sulle radici, nel bikepark le buche da frenata vanno a fondo corsa …", "ziel_hinweis": "Più descrivi con precisione cosa ti dà fastidio oggi, più il tune sarà su misura.", "senden": "Invia i dati", "wird_gesendet_html": "Invio in corso …", "gabel_oder_daempfer_html": "Indica almeno la forcella o l’ammortizzatore.", "allgemein_ja": "Sì", "allgemein_nein": "No", "kopf_label": "Modulo sospensioni", "titel": "I tuoi dati per il tuning", "intro": "Per regolare le sospensioni su misura ci servono alcuni dati su di te, sulla tua bici e sulle tue sospensioni. Ci vogliono circa cinque minuti.", "fuer": "Per", "schritt_name": "01 · Tu", "name_frage": "Come ti chiami?", "schon_ausgefuellt": "Per questo tuning ci sono già dei dati. Se li invii di nuovo, sostituiranno quelli precedenti.", "ungueltig_titel": "Questo link non funziona", "ungueltig_text": "Chiedi un nuovo link dove hai lasciato la tua bici.", "laden": "Caricamento …", "danke_text": "{h} ti contatterà se manca qualcosa.", "danke_text_ohne": "Ti contatteremo se manca qualcosa.", "fehler_text": "Riprova oppure contatta {h}.", "fehler_text_ohne": "Riprova.", "datenschutz": "Responsabile dei tuoi dati è {h}{a}. Vengono usati solo per il lavoro sulle tue sospensioni e a questo scopo trasmessi a un partner specializzato in sospensioni.", "datenschutz_ohne": "I tuoi dati vengono usati solo per il lavoro sulle tue sospensioni.", "sprache": "Lingua"}, "en": {"angaben_erhalten": "Details received", "danke": "Thanks, we've got everything!", "fehler": "That didn't work.", "name": "First and last name", "schritt_fahrer": "02 · You as a rider", "fahrer_frage": "How do you ride?", "fahrer_intro": "The tune doesn't just depend on weight. In each case, choose what suits you best.", "gewicht": "Rider weight, fully kitted (kg)", "bsp_gewicht": "e.g. 85", "gewicht_hinweis": "Including clothing, helmet, protection, backpack and bottle – just as you sit on the bike.", "einsatzbereich": "Riding discipline", "einsatz_dh_race": "You race downhill, on a DH bike or a long-travel enduro. All that counts is getting down as fast as possible under race conditions.", "einsatz_dh_bikepark": "Bike park on a DH or enduro bike: jumps, braking bumps and a good time in the park.", "einsatz_enduro_race": "You race enduro. Downhill you want the fastest time, uphill you pedal under your own steam. The suspension needs more support.", "einsatz_all_mountain": "Up, down, over rocks and roots: rough trails, flowy descents, technical climbs and long rides. Many call it enduro, just without racing.", "einsatz_xc_trail": "You like racking up the kilometres but avoid the roughest descents. The suspension should soak up roots and trail chatter and still pedal efficiently.", "einsatz_xc_race": "Efficiency is everything. The suspension should only work when it has to; every pedal stroke should count.", "fahrstil": "Riding style", "stil_sehr_aggressiv": "Very aggressive", "stil_sehr_aggressiv_text": "You attack the track, plough through everything and always take the fastest line, no matter how rough.", "stil_aggressiv": "Aggressive", "stil_aggressiv_text": "You want to be as fast as possible and use the bike to get there, but you don't take every risk.", "stil_fluessig": "Smooth", "stil_fluessig_text": "You ride thoughtfully, take the smart line rather than the direct one and use the terrain to keep it flowing.", "stil_kontrolliert": "Controlled", "stil_kontrolliert_text": "You ride everything within your ability but don't go to the limit. The goal is a clean run.", "stil_vorsichtig": "Cautious", "stil_vorsichtig_text": "You approach obstacles with care, take the easy line and always keep the bike under control.", "fahrkoennen": "Riding ability", "koennen_experte": "Expert", "koennen_experte_text": "You ride everything, even the hardest black trails with every feature. In races you finish in the top quarter nationally.", "koennen_fortgeschritten": "Advanced", "koennen_fortgeschritten_text": "You ride black trails but skip some features. You feel really at home on red trails. In races you're more mid-pack.", "koennen_einsteiger": "Beginner", "koennen_einsteiger_text": "Red trails are your limit. You're new to the sport or working your way up the difficulty levels. Races just for fun, if at all.", "schritt_bike": "03 · Your bike", "bike_frage": "Which bike do you ride?", "marke": "Brand", "bsp_marke": "e.g. Santa Cruz", "modell": "Model", "bsp_modell": "e.g. Megatower", "jahrgang": "Model year", "bsp_jahrgang": "e.g. 2024", "rahmengroesse": "Frame size", "bsp_rahmengroesse": "e.g. L or S4", "federweg_einstellung": "Travel setting on the frame", "bsp_federweg_einstellung": "e.g. flip chip \"high\" or 160 mm", "federweg_hinweis": "Only if your frame is adjustable.", "laufradgroesse": "Wheel size", "e_bike": "E-bike?", "schritt_fahrwerk": "04 · Your suspension", "fahrwerk_titel": "Fork and shock", "fahrwerk_intro": "Fill in at least the suspension unit we are working on. The serial number is on a sticker on the unit – on forks usually at the back of the lowers, on shocks on the shock body.", "gabel": "Fork", "bsp_gabel": "e.g. FOX 38 Factory GRIP X2, 170 mm", "gabel_sn": "Fork serial number", "daempfer": "Shock", "bsp_daempfer": "e.g. RockShox Super Deluxe Coil, 230×65", "daempfer_sn": "Shock serial number", "setup": "Your current setup", "optional": "(optional)", "bsp_setup": "e.g. fork 78 psi, 2 tokens, LSC 8 clicks open · shock 450 spring, rebound 10 clicks", "setup_hinweis": "Air pressure or spring rate, tokens and clicks – if you know them.", "schritt_ziel": "05 · Your goal", "ziel_frage": "What should get better?", "bsp_ziel": "e.g. The fork dives a lot under braking, I lack rear grip on roots, braking bumps come through in the bike park …", "ziel_hinweis": "The more precisely you describe what bothers you today, the better the tune will fit.", "senden": "Send details", "wird_gesendet_html": "Sending …", "gabel_oder_daempfer_html": "Please enter at least the fork or the shock.", "allgemein_ja": "Yes", "allgemein_nein": "No", "kopf_label": "Suspension form", "titel": "Your details for the tune", "intro": "So that your suspension is tuned to suit you, we need a few details about you, your bike and your suspension. It takes about five minutes.", "fuer": "For", "schritt_name": "01 · You", "name_frage": "What's your name?", "schon_ausgefuellt": "Details for this tune have already been sent. If you send them again, they'll replace the previous ones.", "ungueltig_titel": "This link doesn't work", "ungueltig_text": "Please ask for a new link where you dropped off your bike.", "laden": "Loading …", "danke_text": "{h} will get in touch if anything is missing.", "danke_text_ohne": "We'll get in touch if anything is missing.", "fehler_text": "Please try again or get in touch with {h}.", "fehler_text_ohne": "Please try again.", "datenschutz": "{h}{a} is responsible for your details. They are used only for the work on your suspension and passed on for this purpose to a specialist suspension partner.", "datenschutz_ohne": "Your details are used only for the work on your suspension.", "sprache": "Language"}};
+  var SPRACHEN = ['de', 'fr', 'it', 'en'];
+  // Werte gehen immer deutsch an das Skript, angezeigt wird die Übersetzung
+  var EINSATZ = [['DH Race', 'dh_race'], ['DH Bikepark', 'dh_bikepark'], ['Enduro Race', 'enduro_race'], ['All Mountain', 'all_mountain'], ['XC Trail', 'xc_trail'], ['XC Race', 'xc_race']];
+  var STIL = [['Sehr aggressiv', 'sehr_aggressiv'], ['Aggressiv', 'aggressiv'], ['Flüssig', 'fluessig'], ['Kontrolliert', 'kontrolliert'], ['Vorsichtig', 'vorsichtig']];
+  var KOENNEN = [['Experte', 'experte'], ['Fortgeschritten', 'fortgeschritten'], ['Einsteiger', 'einsteiger']];
+  var RAEDER = ['29"', '27.5"', 'Mullet 29/27.5"', '26"'];
+
+  var params = new URLSearchParams(location.search);
+  var code = (params.get('c') || '').trim();
+  var info = null;
+  var lang = waehleSprache(params.get('lang'));
+  var form = document.getElementById('f');
+
+  function waehleSprache(wunsch) {
+    if (wunsch && SPRACHEN.indexOf(wunsch) > -1) return wunsch;
+    var b = (navigator.language || 'de').slice(0, 2).toLowerCase();
+    return SPRACHEN.indexOf(b) > -1 ? b : 'de';
+  }
+  function t(k) { return (TEXTE[lang] && TEXTE[lang][k]) || TEXTE.de[k] || ''; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function zeige(id) {
+    ['v-laden', 'v-ungueltig', 'v-danke', 'f'].forEach(function (v) { document.getElementById(v).hidden = v !== id; });
+  }
+
+  function optionen(boxId, name, liste, mitText) {
+    var box = document.getElementById(boxId);
+    box.innerHTML = liste.map(function (item, i) {
+      var wert = item[0], key = item[1];
+      return '<label class="option"><input type="radio" name="' + name + '" value="' + esc(wert) + '" data-key="' + name + '"' + (i === 0 ? ' required' : '') + '>' +
+        '<span>' + (mitText ? '<strong data-o="' + key + '"></strong><small data-o="' + key + '_text"></small>' : '<span data-o="' + key + '"></span>') + '</span></label>';
+    }).join('');
+  }
+  optionen('o-einsatz', 'einsatzbereich', EINSATZ.map(function (e) { return [e[0], 'x_' + e[1]]; }), true);
+  optionen('o-stil', 'fahrstil', STIL.map(function (e) { return [e[0], 'stil_' + e[1]]; }), true);
+  optionen('o-koennen', 'fahrkoennen', KOENNEN.map(function (e) { return [e[0], 'koennen_' + e[1]]; }), true);
+  document.getElementById('o-rad').innerHTML = RAEDER.map(function (r, i) {
+    return '<label class="option"><input type="radio" name="laufrad" value="' + esc(r) + '" data-key="laufrad"' + (i === 0 ? ' required' : '') + '><span>' + esc(r) + '</span></label>';
+  }).join('');
+  document.getElementById('o-ebike').innerHTML =
+    '<label class="option"><input type="radio" name="e_bike" value="Nein" data-key="e_bike" required><span data-t="allgemein_nein"></span></label>' +
+    '<label class="option"><input type="radio" name="e_bike" value="Ja" data-key="e_bike"><span data-t="allgemein_ja"></span></label>';
+
+  function texteSetzen() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+    document.querySelectorAll('[data-tp]').forEach(function (el) { el.placeholder = t(el.getAttribute('data-tp')); });
+    document.querySelectorAll('[data-o]').forEach(function (el) {
+      var k = el.getAttribute('data-o');
+      if (k.indexOf('x_') === 0) {
+        // Einsatzbereich: Name bleibt wie im Shop (DH Race …), nur die Beschreibung ist übersetzt
+        if (/_text$/.test(k)) el.textContent = t('einsatz_' + k.slice(2, -5));
+        else el.textContent = EINSATZ.filter(function (e) { return 'x_' + e[1] === k; })[0][0];
+      } else {
+        el.textContent = t(k);
+      }
+    });
+    var h = info && info.haendler;
+    document.getElementById('haendler').textContent = h || '';
+    document.title = t('kopf_label') + (h ? ' · ' + h : '');
+    var fuer = document.getElementById('fuer');
+    if (info && info.titel) { fuer.hidden = false; fuer.textContent = t('fuer') + ': ' + info.titel; }
+    document.getElementById('schon').hidden = !(info && info.ausgefuellt);
+    var a = info && info.haendler_adresse ? ', ' + info.haendler_adresse : '';
+    document.getElementById('privacy').textContent = h ? t('datenschutz').replace('{h}', h).replace('{a}', a) : t('datenschutz_ohne');
+    document.getElementById('danke-text').textContent = h ? t('danke_text').replace('{h}', h) : t('danke_text_ohne');
+    pruefeFahrwerk();
+    var lb = document.getElementById('lang');
+    lb.setAttribute('aria-label', t('sprache'));
+    lb.innerHTML = SPRACHEN.map(function (s) {
+      return '<button type="button" data-lang="' + s + '" aria-pressed="' + (s === lang) + '">' + s.toUpperCase() + '</button>';
+    }).join('');
+  }
+  document.getElementById('lang').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-lang]');
+    if (!b) return;
+    lang = b.getAttribute('data-lang');
+    texteSetzen();
+  });
+
+  var gabel = document.getElementById('f-gabel');
+  var daempfer = document.getElementById('f-daempfer');
+  function pruefeFahrwerk() {
+    var ok = gabel.value.trim() || daempfer.value.trim();
+    gabel.setCustomValidity(ok ? '' : t('gabel_oder_daempfer_html'));
+  }
+  gabel.addEventListener('input', pruefeFahrwerk);
+  daempfer.addEventListener('input', pruefeFahrwerk);
+
+  function daten() {
+    var d = { formular: 'fahrwerk', version: 3, seite: 'neutral', sprache: lang, code: code, gesendet: new Date().toISOString() };
+    form.querySelectorAll('[data-key]').forEach(function (el) {
+      if ((el.type === 'radio' || el.type === 'checkbox') && !el.checked) return;
+      d[el.getAttribute('data-key')] = el.value.trim();
+    });
+    return d;
+  }
+
+  var sendet = false;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (sendet) return;
+    pruefeFahrwerk();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    var fehler = document.getElementById('fehler');
+    var button = form.querySelector('.submit');
+    fehler.hidden = true;
+    sendet = true;
+    button.disabled = true;
+    button.textContent = t('wird_gesendet_html');
+    fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(daten()) })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res || !res.ok) throw new Error('nicht gespeichert');
+        zeige('v-danke');
+        var v = document.getElementById('v-danke');
+        v.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(function () {
+        sendet = false;
+        button.disabled = false;
+        button.textContent = t('senden');
+        var h = info && info.haendler;
+        fehler.innerHTML = '<strong>' + esc(t('fehler')) + '</strong> ' + esc(h ? t('fehler_text').replace('{h}', h) : t('fehler_text_ohne'));
+        fehler.hidden = false;
+      });
+  });
+
+  texteSetzen();
+  if (!/^[0-9A-Za-z-]{10,60}$/.test(code)) { zeige('v-ungueltig'); return; }
+  fetch(ENDPOINT + '?aktion=formular&c=' + encodeURIComponent(code))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res || !res.ok) throw new Error('ungültig');
+      info = res;
+      if (!params.get('lang') && res.sprache && SPRACHEN.indexOf(res.sprache) > -1) lang = res.sprache;
+      texteSetzen();
+      zeige('f');
+    })
+    .catch(function () { zeige('v-ungueltig'); });
+})();
+</script>
+</body>
+</html>
